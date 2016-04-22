@@ -88,31 +88,31 @@
   [rb body content-type]
   (cond
     (= "multipart/form-data" content-type)
-    ,,(doseq [bp (if (coll? body) body (list body))]
-        (.addBodyPart rb bp))
-    
+    (doseq [bp (if (coll? body) body (list body))]
+      (.addBodyPart rb bp))
+
     (map? body)
-    ,,(doseq [[k v] body]
-        (.addParameter rb
-                       (if (keyword? k) (name k) k)
-                       (str v)))
-    
+    (doseq [[k v] body]
+      (.addParameter rb
+                     (if (keyword? k) (name k) k)
+                     (str v)))
+
     (string? body)
-    ,,(.setBody rb (.getBytes (if (= "application/x-www-form-urlencoded" content-type)
-                                (req/url-encode body)
-                                body)
-                              "UTF-8"))
-    
+    (.setBody rb (.getBytes (if (= "application/x-www-form-urlencoded" content-type)
+                              (req/url-encode body)
+                              body)
+                            "UTF-8"))
+
     (instance? InputStream body)
-    ,,(.setBody rb body)
-    
+    (.setBody rb body)
+
     (instance? File body)
-    ,,(.setBody rb body)))
+    (.setBody rb body)))
 
 (defn- set-timeout
   "sets the timeout for the request"
   [rb timeout]
-  
+
   (let [prc (PerRequestConfig.)]
     (.setRequestTimeoutInMs prc timeout)
     (.setPerRequestConfig rb prc)))

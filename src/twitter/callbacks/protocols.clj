@@ -31,9 +31,9 @@
   (get-single-streaming [this]))
 
 (defrecord SyncSingleCallback
-    [on-success
-     on-failure
-     on-exception]
+           [on-success
+            on-failure
+            on-exception]
 
   AsyncSyncStatus
   (get-async-sync [_]
@@ -48,9 +48,9 @@
     req/*default-callbacks*))
 
 (defrecord SyncStreamingCallback
-    [on-bodypart
-     on-failure
-     on-exception]
+           [on-bodypart
+            on-failure
+            on-exception]
 
   AsyncSyncStatus
   (get-async-sync [_]
@@ -68,9 +68,9 @@
                     [baos :continue])})))
 
 (defrecord AsyncSingleCallback
-    [on-success
-     on-failure
-     on-exception]
+           [on-success
+            on-failure
+            on-exception]
 
   AsyncSyncStatus
   (get-async-sync [_]
@@ -87,16 +87,16 @@
             :error     (fn [response throwable] ((:on-exception this) response throwable) throwable)})))
 
 (defrecord AsyncStreamingCallback
-    [on-bodypart
-     on-failure
-     on-exception]
+           [on-bodypart
+            on-failure
+            on-exception]
 
   AsyncSyncStatus (get-async-sync [_] :async)
   SingleStreamingStatus (get-single-streaming [_] :streaming)
 
   EmitCallbackList
   (emit-callback-list
-      [this]
+    [this]
     (merge req/*default-callbacks*
            {:completed (fn [response] (handle-response response this :events #{:on-failure}))
             :part      (fn [response baos] ((:on-bodypart this) response baos) [baos :continue])

@@ -3,9 +3,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defrecord ApiContext
-    [^String protocol
-     ^String host
-     ^Integer version])
+           [^String protocol
+            ^String host
+            ^Integer version])
 
 (defn make-api-context
   ([protocol host]

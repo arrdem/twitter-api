@@ -12,9 +12,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defrecord OauthCredentials
-    [consumer
-     ^String access-token
-     ^String access-token-secret])
+           [consumer
+            ^String access-token
+            ^String access-token-secret])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -42,7 +42,7 @@
     (str "Bearer " app-only-token)
     (let [val-transform (if url-encode? oas/url-encode identity)
           s             (reduce (fn [s [k v]] (format "%s%s=\"%s\","
-                                                     s (name k) (val-transform (str v))))
+                                                      s (name k) (val-transform (str v))))
                                 "OAuth "
                                 signing-map)]
       (.substring s 0 (dec (count s))))))

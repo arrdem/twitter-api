@@ -59,18 +59,18 @@
                            {:Authorization (oauth-header-string oauth-map)}))
         my-args   (cond
                     (= verb :get)
-                    ,,{:query   query
-                       :headers headers
-                       :body    body}
-                    
+                    {:query   query
+                     :headers headers
+                     :body    body}
+
                     (nil? body)
-                    ,,{:headers (add-form-content-type headers)
-                       :body    query}
-                    
+                    {:headers (add-form-content-type headers)
+                     :body    query}
+
                     :else
-                    ,,{:query   query
-                       :headers headers
-                       :body    body})]
+                    {:query   query
+                     :headers headers
+                     :body    body})]
     {:verb           verb
      :uri            final-uri
      :processed-args (merge (dissoc arg-map :query :headers :body :params :oauth-creds :client :api :callbacks)
@@ -102,10 +102,10 @@
     ;;    (println "Creating" fn-name)
     `(defn ~fn-name
        [& {:as args#}]
-       
+
        (let [arg-map#     (merge ~rest-map args#)
              api-context# (assert-throw (:api arg-map#) "must include an ':api' entry in the params")
              verb#        (or (:verb args#) ~default-verb)
              uri#         (make-uri api-context# ~resource-path)]
-         
+
          (http-request verb# uri# arg-map#)))))

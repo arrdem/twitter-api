@@ -67,8 +67,8 @@
 ; i.e. :body [(file-body-part "/pics/mypic.jpg") (status-body-part "hello world")]
 ; for an example, see twitter.test.file-upload
 (def-twitter-restful-method :post "statuses/update_with_media"
-                            :api *rest-api*
-                            :headers {:content-type "multipart/form-data"})
+  :api *rest-api*
+  :headers {:content-type "multipart/form-data"})
 
 ;; Search
 (def-twitter-restful-method :get "search/tweets")
@@ -87,7 +87,6 @@
 (def-twitter-restful-method :get "trends/place")
 (def-twitter-restful-method :get "trends/available")
 (def-twitter-restful-method :get "trends/closest")
-
 
 ;; Oauth
 (def-twitter-restful-method :get  "oauth/authenticate" :api *oauth-api*)

@@ -19,7 +19,6 @@
   (:require [clojure.data.json :as json]
             [http.async.client :as ac]))
 
-
 (declare get-twitter-error-message)
 
 (defn response-return-everything 
@@ -75,19 +74,19 @@
         req    (:request body)]    
     (cond
       (rate-limit-error? status)
-      ,,(format-rate-limit-error response)
-      
+      (format-rate-limit-error response)
+
       (and req code desc)
-      ,,(format "Twitter responded to request '%s' with error %d: %s" req code desc)
-      
+      (format "Twitter responded to request '%s' with error %d: %s" req code desc)
+
       (and code desc)
-      ,,(format "Twitter responded to request with error %d: %s" code desc)
-      
+      (format "Twitter responded to request with error %d: %s" code desc)
+
       desc
-      ,,(format "Twitter responded to request with error: %s" desc)
-      
+      (format "Twitter responded to request with error: %s" desc)
+
       :else
-      ,,"Twitter responded to request with an unknown error")))
+      "Twitter responded to request with an unknown error")))
 
 (defn handle-response
   "takes a response and reacts to success or error.
@@ -96,12 +95,12 @@
   (cond
     (and (:on-exception events)
          (ac/error response))
-    ,,((:on-exception callbacks) response (ac/error response))
-    
+    ((:on-exception callbacks) response (ac/error response))
+
     (and (:on-success events)
          (< (:code (ac/status response)) 400))
-    ,,((:on-success callbacks) response)
-    
+    ((:on-success callbacks) response)
+
     (and (:on-failure events)
          (>= (:code (ac/status response)) 400))
-    ,,((:on-failure callbacks) response)))
+    ((:on-failure callbacks) response)))
