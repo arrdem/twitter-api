@@ -1,6 +1,6 @@
 (defproject arrdem/twitter-api "0.7.8"
   :description "full twitter api async interface"
-  :dependencies [[org.jaunt-lang/ "0.2.0"]
+  :dependencies [[org.jaunt-lang/jaunt "0.2.0"]
                  [org.clojure/data.json "0.2.5"]
                  [org.clojure/data.codec "0.1.0"]
                  [http.async.client "0.5.2"]
