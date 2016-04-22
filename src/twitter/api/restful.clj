@@ -1,23 +1,29 @@
 (ns twitter.api.restful
-  (:use
-   [twitter core callbacks api])
-  (:import
-   (twitter.api ApiContext)))
+  (:require [twitter
+             [api :refer :all]
+             [callbacks :refer :all]
+             [core :refer :all]]
+            [clojure.string :as str]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(def ^:dynamic *rest-api* (make-api-context "https" "api.twitter.com" "1.1"))
-(def ^:dynamic *oauth-api* (make-api-context "https" "api.twitter.com"))
-(def ^:dynamic *rest-upload-api* (make-api-context "https" "upload.twitter.com" 1))
+(def ^:dynamic *rest-api*
+  (make-api-context "https" "api.twitter.com" "1.1"))
+
+(def ^:dynamic *oauth-api*
+  (make-api-context "https" "api.twitter.com"))
+
+(def ^:dynamic *rest-upload-api*
+  (make-api-context "https" "upload.twitter.com" 1))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmacro def-twitter-restful-method
   [verb resource-path & rest]
-  (let [json-path (str resource-path ".json") ; v1.1 is .json only.
-        dashed-name (clojure.string/replace resource-path #"[^a-zA-Z]+" "-") ; convert group of symbols to a dash 
-        clean-name (clojure.string/replace dashed-name #"-$" "") ; drop trailing dashes
-        fn-name (symbol clean-name)]
+  (let [json-path   (str resource-path ".json")                   ; v1.1 is .json only.
+        dashed-name (str/replace resource-path #"[^a-zA-Z]+" "-") ; convert group of symbols to a dash 
+        clean-name  (str/replace dashed-name #"-$" "")            ; drop trailing dashes
+        fn-name     (symbol clean-name)]
     `(def-twitter-method ~fn-name ~verb ~json-path :api ~*rest-api* :callbacks (get-default-callbacks :sync :single) ~@rest)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -156,7 +162,6 @@
 (def-twitter-restful-method :get  "geo/search")
 (def-twitter-restful-method :get  "geo/similar_places")
 (def-twitter-restful-method :post "geo/place")
-
 
 ;; Help
 (def-twitter-restful-method :get "help/configuration")
